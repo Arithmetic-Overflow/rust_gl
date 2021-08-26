@@ -5,6 +5,8 @@ use std::fs;
 #[macro_use(implement_vertex, uniform)]
 extern crate glium;
 
+use glium::index::PrimitiveType;
+
 #[derive(Copy, Clone)]
 struct Vertex {
     position: [f32; 2],
@@ -37,10 +39,12 @@ fn main() {
     let vertex2 = Vertex { position: [-1.0, 1.0] };
     let vertex3 = Vertex { position: [ 1.0, 1.0] };
     let vertex4 = Vertex { position: [ 1.0,-1.0] };
-    let shape = vec![vertex1, vertex2, vertex3, vertex3, vertex4, vertex1];
+    let shape = vec![vertex1, vertex2, vertex3, vertex4];
 
     let vertex_buffer = glium::VertexBuffer::new(&display, &shape).unwrap();
-    let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
+
+    let index_buffer = glium::IndexBuffer::new(&display, PrimitiveType::TrianglesList,
+    	&[0u16,1,2,2,3,0]).unwrap();
 
     event_loop.run(move |ev, _, control_flow| {
     	let time = 0.0001*(start_time.elapsed().unwrap().as_millis() as f32);
@@ -48,7 +52,7 @@ fn main() {
         let mut target = display.draw();
         target.clear_color(0.0, 0.0, 1.0, 1.0);
 
-        target.draw(&vertex_buffer, &indices, &program, &uniform!{ time: time },
+        target.draw(&vertex_buffer, &index_buffer, &program, &uniform!{ time: time },
             &Default::default()).unwrap();
 
         target.finish().unwrap();
