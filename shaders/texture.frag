@@ -7,18 +7,16 @@ out vec4 color;
 uniform sampler2D tex;
 uniform float time;
 
+uniform sampler2D noise;
 
 void main() {
-    float periodScale = 0.8;
-    vec2 distortion = 0.8 * vec2(
-        sin(periodScale*time*mod(pos.x + 1.0, 0.4)),
-        sin(periodScale*time*mod(pos.y + 1.0, 0.4))
-    );
+    float distortion_amount = 2.0 * (texture(noise, v_tex_coords).x - 0.5);
+    vec2 distortion = 0.1*vec2(distortion_amount, distortion_amount);
 
-    // distortion = abs(distortion);
+    vec2 tex_coords = v_tex_coords + distortion;
 
-    vec2 tex_coords = v_tex_coords + 0.01 * distortion;
     vec4 texcolor = texture(tex, tex_coords);
+
     float saturation = 5.0;
     vec4 saturatedColor = floor(texcolor*saturation)/saturation;
     color = saturatedColor;
