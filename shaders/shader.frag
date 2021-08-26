@@ -10,16 +10,25 @@ vec2 complexSquare(vec2 complex) {
 		complex.x * complex.x - complex.y * complex.y,
 		2.0 * complex.x * complex.y
 	);
-} 
+}
+
+vec2 complexPow(vec2 complex, float p) {
+    float arg = atan(complex.y, complex.x);
+    float len = length(complex);
+    float real = pow(len, p) * cos(p*arg);
+    float im = pow(len, p) * sin(p*arg);
+    return vec2(real, im);
+}
 
 /*
 Colouring done in this function is arbitrary
 I just thought it looked nice with a disco on top of it
 */
 vec4 mandleIter(int numIter, vec2 position) {
-	vec2 z = vec2(sin(time), 0.0);
+	vec2 z = vec2(0.0, 0.0);
+	float exponent = mod(5*time, 5.0) + 1.0;
 	for(int i = 0; i < numIter; i++) {
-		z = complexSquare(z) + position;
+		z = complexPow(z, exponent) + position;
 
 		if(length(z) > 2.0) {
 			float curr = i;
@@ -27,49 +36,18 @@ vec4 mandleIter(int numIter, vec2 position) {
 
 			float intensity = curr/maxIter;
 
-			// minimum hues
-			float minHue = 0.2;
-			float hueSpeed = 4;
-			float scaleFactor = 0.5;
-
-			float mr = sin(hueSpeed*pos.x);
-			float mg = scaleFactor*(cos(hueSpeed*pos.x) + sin(hueSpeed*pos.x));
-			float mb = scaleFactor*(sin(hueSpeed*pos.y) + cos(hueSpeed*pos.x));
-
-			// actual hues
-			float r = max(minHue, mr);
-			float g = max(minHue, mg);
-			float b = max(minHue, mb);
-
-			float a = 1.0;
-
-			vec4 hue = vec4(r, g, b, a);
-			return hue * intensity;
+			return intensity * vec4(1.0, 0.5, 0.0, 1.0);
 		}
 	}
 
-	float mr = 2.0 * sin(pos.y*pos.y);
-	float mg = 2.0 * sin(pos.x*pos.x);
-	float mb = 2.0 * cos(pos.x*pos.y);
-	float a = 1.0;
-
-	float r = min(1.0, mr);
-	float g = min(1.0, mg);
-	float b = min(1.0, mb);
-
-	float colorfulness = 0.85;
-
-	vec4 hue = colorfulness * vec4(r, g, b, a);
-	vec4 pointColor = colorfulness * hue + (1-colorfulness) * vec4(1.0, 1.0, 1.0, 1.0);
-
-	return pointColor;
+	return vec4(0.0, 0.0, 0.0, 0.0);
 }
 
 void main() {
-	float xoffset = -0.5;
+	float xoffset = 0.0;
 	float yoffset = 0.0;
 
-	float zoom = 1.4;
+	float zoom = 1.8;
 
 	vec2 position = vec2(zoom*(pos.x) + xoffset, zoom*(pos.y) + yoffset);
 
