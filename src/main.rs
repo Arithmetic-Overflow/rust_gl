@@ -5,8 +5,6 @@ use std::fs;
 #[macro_use(implement_vertex, uniform)]
 extern crate glium;
 
-// extern crate shaderc;
-
 #[derive(Copy, Clone)]
 struct Vertex {
     position: [f32; 2],
