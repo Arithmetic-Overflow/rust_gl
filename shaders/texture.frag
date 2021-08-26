@@ -10,8 +10,9 @@ uniform float time;
 uniform sampler2D noise;
 
 void main() {
-    float distortion_amount = 2.0 * (texture(noise, v_tex_coords).x - 0.5);
-    vec2 distortion = 0.1*vec2(distortion_amount, distortion_amount);
+    float distortion_amount = texture(noise, v_tex_coords).x;
+    distortion_amount = 0.03 * sin(time * distortion_amount) * distortion_amount;
+    vec2 distortion = vec2(distortion_amount, distortion_amount);
 
     vec2 tex_coords = v_tex_coords + distortion;
 

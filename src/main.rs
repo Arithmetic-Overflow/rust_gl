@@ -79,7 +79,23 @@ fn main() {
 		// end of texture stuff
 
 	// noise generation
-	// let perlin = Perlin::new();
+	let perlin = Perlin::new();
+
+	PlaneMapBuilder::new(&perlin)
+		.set_size(100, 100)
+		.set_x_bounds(-4.0, 4.0)
+		.set_y_bounds(-4.0, 4.0)
+		.build()
+		.write_to_file("../noise/fbm.png");
+
+	// load the noise
+	let noise_img = image::load(Cursor::new(&include_bytes!("../noise/fbm.png")),
+		image::ImageFormat::Png).unwrap().to_rgba8();
+	let image_dimensions = noise_img.dimensions();
+	let noise_img = glium::texture::RawImage2d::from_raw_rgba_reversed(&noise_img.into_raw(), image_dimensions);
+
+	let noise_texture = glium::texture::Texture2d::new(&display, noise_img).unwrap();
+
 
 	// event loop
 	event_loop.run(move |ev, _, control_flow| {
@@ -98,24 +114,6 @@ fn main() {
 			_ => (),
 		}
 		let time = 0.001*(start_time.elapsed().unwrap().as_millis() as f32);
-
-		// generate the noise
-		let perlin = Perlin::new();
-
-		PlaneMapBuilder::new(&perlin)
-			.set_size(500, 500)
-			.set_x_bounds(0.0, 1.0)
-			.set_y_bounds(0.0, 1.0)
-			.build()
-			.write_to_file("../noise/fbm.png");
-
-		// load the noise
-		let noise_img = image::load(Cursor::new(&include_bytes!("../noise/fbm.png")),
-			image::ImageFormat::Png).unwrap().to_rgba8();
-		let image_dimensions = noise_img.dimensions();
-		let noise_img = glium::texture::RawImage2d::from_raw_rgba_reversed(&noise_img.into_raw(), image_dimensions);
-
-		let noise_texture = glium::texture::Texture2d::new(&display, noise_img).unwrap();
 
 		let uniforms = uniform! {
 	    	matrix: [
