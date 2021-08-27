@@ -13,11 +13,11 @@ vec2 complexSquare(vec2 complex) {
 }
 
 vec2 complexPow(vec2 complex, float p) {
-    float arg = atan(complex.y, complex.x);
-    float len = length(complex);
-    float real = pow(len, p) * cos(p*arg);
-    float im = pow(len, p) * sin(p*arg);
-    return vec2(real, im);
+	float arg = atan(complex.y, complex.x);
+	float len = length(complex);
+	float real = pow(len, p) * cos(p*arg);
+	float im = pow(len, p) * sin(p*arg);
+	return vec2(real, im);
 }
 
 /*

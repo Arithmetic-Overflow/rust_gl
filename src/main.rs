@@ -30,7 +30,7 @@ fn main() {
 	let size: glutin::dpi::LogicalSize<u32> = (400, 250).into();
 	let wb = glutin::window::WindowBuilder::new()
 		.with_inner_size(size)
-        .with_title("rust_gl");
+		.with_title("rust_gl");
 
 	let cb = glutin::ContextBuilder::new();
 	let display = glium::Display::new(wb, cb, &event_loop).unwrap();
