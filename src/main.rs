@@ -10,11 +10,6 @@ use std::time::SystemTime;
 use std::fs;
 use std::vec;
 
-// use noise::{NoiseFn, Perlin};
-
-// use noise::utils::PlaneMapBuilder;
-// use crate::noise::utils::NoiseMapBuilder;
-
 use glium::{glutin, Surface};
 use glium::index::PrimitiveType;
 
