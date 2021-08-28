@@ -4,6 +4,9 @@ in vec2 v_tex_coords;
 in vec2 pos;
 out vec4 color;
 
+uniform sampler2D tex;
+uniform float time;
+
 
 // got the helper functions off the internet
 #define NUM_OCTAVES 25
