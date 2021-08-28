@@ -27,7 +27,7 @@ fn main() {
 
 	let event_loop = glutin::event_loop::EventLoop::new();
 	
-	let size: glutin::dpi::LogicalSize<u32> = (400, 250).into();
+	let size: glutin::dpi::LogicalSize<u32> = (660, 900).into();
 	let wb = glutin::window::WindowBuilder::new()
 		.with_inner_size(size)
 		.with_title("rust_gl");
@@ -36,8 +36,8 @@ fn main() {
 	let display = glium::Display::new(wb, cb, &event_loop).unwrap();
 
 	// initialize the shaders
-	let vert_shader_path = "shaders/flow.vert";
-	let frag_shader_path = "shaders/flow.frag";
+	let vert_shader_path = "shaders/water.vert";
+	let frag_shader_path = "shaders/water.frag";
 
 	let vert_shader_src = fs::read_to_string(vert_shader_path)
 		.expect("Something went wrong reading the file");
@@ -63,7 +63,7 @@ fn main() {
 		&[0u16,1,2,2,3,0]).unwrap();
 
 	// load the image
-	let image = image::load(Cursor::new(&include_bytes!("../assets/cherry_blossom.png")),
+	let image = image::load(Cursor::new(&include_bytes!("../assets/photo.png")),
 							image::ImageFormat::Png).unwrap().to_rgba8();
 	let image_dimensions = image.dimensions();
 	let image = glium::texture::RawImage2d::from_raw_rgba_reversed(&image.into_raw(), image_dimensions);
